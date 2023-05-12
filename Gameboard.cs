@@ -30,9 +30,9 @@ namespace Tic_Tac_Toe_game
                 for (int y = 0; y < Cells.GetLength(1); y++)
                 {
                     if (!CellPostitionValues.Any(z => z.x == x && z.y == y))
-                        Write("|{0,-5}", arg0: Cells[x, y]);
+                        Write("|  {0,-5}", arg0: Cells[x, y]);
                     else
-                        Write("|{0,-5}", arg0: CellPostitionValues.First(z => z.x == x && z.y == y).Player.Symbol);
+                        Write("|  {0,-5}", arg0: CellPostitionValues.First(z => z.x == x && z.y == y).Player.Symbol);
                 }
                 WriteLine("\n {0,-30}", arg0: "---------------------");
             }
@@ -73,6 +73,8 @@ namespace Tic_Tac_Toe_game
             }
 
             this.ToString();
+            if(ChecWin( player))
+             Write(player.Name +" has win");
         }
 
 
@@ -105,5 +107,25 @@ namespace Tic_Tac_Toe_game
             currentPlayerIndex = index;
             return true;
         }
+
+        private List<List<int>> WinList  => new List<List<int>>
+        {
+            new List<int>{0,1,2},
+            new List<int>{3,4,5},
+            new List<int>{6,7,8},
+            new List<int>{0,3,6},
+            new List<int>{1,4,7},
+            new List<int>{2,5,8},
+            new List<int>{0,4,8},
+            new List<int>{2,4,6},
+        };
+    
+        private bool ChecWin(Player player)
+        {
+           var playerlist = CellPostitionValues.Where(x=>x.Player==player).Select(x=>x.CellValue);
+            return WinList.Any(list => list.OrderBy(x=>x).SequenceEqual(playerlist.OrderBy(x=>x)));
+        }
+
+        
     }
 }

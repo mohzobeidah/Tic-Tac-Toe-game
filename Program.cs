@@ -10,6 +10,8 @@ Console.WriteLine("Hello, World!");
 Gameboard gameboard = new Gameboard(players);
 gameboard.Setvalue(8,players[0]);
 gameboard.Setvalue(7,players[1]);
+gameboard.Setvalue(4,players[0]);
 gameboard.Setvalue(1,players[1]);
+gameboard.Setvalue(2,players[0]);
 
 //gameboard.ToString();
