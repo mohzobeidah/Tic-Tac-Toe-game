@@ -11,8 +11,12 @@ namespace Tic_Tac_Toe_game
         private record CellPostitionWithValues(int x, int y, int CellValue, Player Player);
         private List<CellPostitionWithValues> CellPostitionValues = new List<CellPostitionWithValues>();
         private List<Player> players = new List<Player>();
-        private int? currentPlayerIndex;
+        public int  currentPlayerIndex {get; private set;}=0;
 
+
+        public int Trials => CellPostitionValues.Count;
+        public int MaxTry => _maxCell;
+        public bool FinishGame = false;
         public Gameboard(List<Player> players)
         {
             IntiazeGame();
@@ -53,10 +57,10 @@ namespace Tic_Tac_Toe_game
             }
 
         }
-        public void Setvalue(int postition, Player player)
+        public bool Setvalue(int postition, Player player)
         {
-            if (!CurrentPlayer(player)) return;
-            if (!ValidateInput(postition)) return;
+            if (!ValidateInput(postition)) return false;
+            if (!CurrentPlayer(player)) return false;
             int i = 0;
             for (int x = 0; x < Cells.GetLength(0); x++)
             {
@@ -73,8 +77,12 @@ namespace Tic_Tac_Toe_game
             }
 
             this.ToString();
-            if(ChecWin( player))
-             Write(player.Name +" has win");
+            if (ChecWin(player))
+            {
+                Write(player.Name + " has win");
+                FinishGame = true;
+            }
+            return true;
         }
 
 
@@ -84,11 +92,13 @@ namespace Tic_Tac_Toe_game
             if (CellPostitionValues.Any(z => z.CellValue == postition))
             {
                 Write("has a value before");
+                 this.ToString();
                 return false;
             }
             if (CellPostitionValues.Count >= _maxCell || postition < 0)
             {
                 Write("can not add wrong value ");
+                 this.ToString();
                 return false;
             }
 
@@ -99,16 +109,18 @@ namespace Tic_Tac_Toe_game
         {
 
             int index = players.IndexOf(player);
-            if (index == currentPlayerIndex)
+            if (index != currentPlayerIndex)
             {
                 Write("not your turn");
                 return false;
+                this.ToString();
             }
-            currentPlayerIndex = index;
+            index++ ;
+            currentPlayerIndex =players.Count-1<index?0:index ;
             return true;
         }
 
-        private List<List<int>> WinList  => new List<List<int>>
+        private List<List<int>> WinList => new List<List<int>>
         {
             new List<int>{0,1,2},
             new List<int>{3,4,5},
@@ -119,13 +131,13 @@ namespace Tic_Tac_Toe_game
             new List<int>{0,4,8},
             new List<int>{2,4,6},
         };
-    
+
         private bool ChecWin(Player player)
         {
-           var playerlist = CellPostitionValues.Where(x=>x.Player==player).Select(x=>x.CellValue);
-            return WinList.Any(list => list.OrderBy(x=>x).SequenceEqual(playerlist.OrderBy(x=>x)));
+            var playerlist = CellPostitionValues.Where(x => x.Player == player).Select(x => x.CellValue);
+            return WinList.Any(list => list.OrderBy(x => x).SequenceEqual(playerlist.OrderBy(x => x)));
         }
 
-        
+
     }
 }
