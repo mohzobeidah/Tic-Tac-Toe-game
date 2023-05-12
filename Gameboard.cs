@@ -7,11 +7,11 @@ namespace Tic_Tac_Toe_game
 {
     public class Gameboard
     {
-        private int _maxCell=0;
+        private int _maxCell = 0;
         private record CellPostitionWithValues(int x, int y, int CellValue, Player Player);
         private List<CellPostitionWithValues> CellPostitionValues = new List<CellPostitionWithValues>();
         private List<Player> players = new List<Player>();
-        private int? currentPlayerIndex  ;
+        private int? currentPlayerIndex;
 
         public Gameboard(List<Player> players)
         {
@@ -55,8 +55,8 @@ namespace Tic_Tac_Toe_game
         }
         public void Setvalue(int postition, Player player)
         {
-            if(!CurrentPlayer ( player)) return;
-            if(!ValidateInput ( postition)) return;
+            if (!CurrentPlayer(player)) return;
+            if (!ValidateInput(postition)) return;
             int i = 0;
             for (int x = 0; x < Cells.GetLength(0); x++)
             {
@@ -71,20 +71,20 @@ namespace Tic_Tac_Toe_game
                     i++;
                 }
             }
-           
+
             this.ToString();
         }
 
 
-        private bool ValidateInput (int postition)
+        private bool ValidateInput(int postition)
         {
-             WriteLine(CellPostitionValues.Count );
+            WriteLine(CellPostitionValues.Count);
             if (CellPostitionValues.Any(z => z.CellValue == postition))
             {
                 Write("has a value before");
                 return false;
             }
-            if (CellPostitionValues.Count >= _maxCell)
+            if (CellPostitionValues.Count >= _maxCell || postition < 0)
             {
                 Write("can not add wrong value ");
                 return false;
@@ -92,17 +92,17 @@ namespace Tic_Tac_Toe_game
 
             return true;
         }
-        
-        private bool CurrentPlayer (Player player)
+
+        private bool CurrentPlayer(Player player)
         {
-          
-          int   index = players.IndexOf(player);
-          if(index ==currentPlayerIndex)
-          {
-             Write("not your turn");
-             return false;
-          }
-          currentPlayerIndex=index;
+
+            int index = players.IndexOf(player);
+            if (index == currentPlayerIndex)
+            {
+                Write("not your turn");
+                return false;
+            }
+            currentPlayerIndex = index;
             return true;
         }
     }
